@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>ADMINISTRATIVE PORTAL</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="topbar"><span>NIGERIA IMMIGRATION SERVICE | CCC INTERPOL ADMINISTRATIVE PORTAL</span><span id="clock"></span></div>
+<header><div class="headInner"><div class="brand"><div class="crest"></div><div><h1>ADMINISTRATIVE PORTAL</h1><p>OFFICIAL REGISTRY • FILE TRACKING • CONFIDENTIAL</p></div></div><div class="headRight"><div class="userBox"><small>LOGGED IN AS</small><b id="topUser">GUEST</b></div><div class="stamp">OFFICIAL<br>USE ONLY</div></div></div>
+<nav><button class="active" onclick="go('home',this)">HOME</button><button onclick="go('incoming',this)">INCOMING MAIL</button><button onclick="openFieldLogin('CREAT_FILE')">CREAT FILE</button><button onclick="openFieldLogin('FILE_MOVEMENT')">FILE MOVEMENT</button><button onclick="go('searchPage',this)">SEARCH FILE LOCATION</button><button onclick="go('dailyPage',this)">DAILY REPORT</button><button onclick="openAdminLogin()">ADMINISTRATION</button></nav></header>
+
+<section id="home" class="page active">
+<div class="dashHead"><div><h2>OFFICIAL Dashboard</h2><p>Dashboard For Security</p></div><span class="live">● LIVE DATABASE</span></div>
+
+<div class="statsMature"><div><label>INCOMING MAILS</label><b id="sMail">0</b><span>Total Registered</span></div><div><label>FILES CREATED</label><b id="sFile">0</b><span>Total Files</span></div><div><label>MOVEMENTS</label><b id="sMove">0</b><span>Total In / Out</span></div><div><label>DEEP FILES</label><b id="sDeep">0</b><span>Total Archived</span></div></div>
+
+<div class="card" style="text-align:center;padding:28px">
+<h3 style="font-family:Georgia,serif">Welcome to Administrative Portal</h3>
+<p style="font-size:13px;color:#64748b;margin:8px 0 16px">Use the menu above to work. Dashboard shows only counts.<br>To see details, open INCOMING MAIL, CREAT FILE, FILE MOVEMENT or SEARCH FILE LOCATION.</p>
+<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+<button class="btnGold" onclick="go('incoming',document.querySelectorAll('nav button')[1])">GO TO INCOMING MAIL →</button>
+<button class="btnDark" onclick="openFieldLogin('CREAT_FILE')">GO TO CREAT FILE →</button>
+<button class="btnDark" onclick="go('dailyPage',document.querySelectorAll('nav button')[5])">GO TO DAILY REPORT →</button>
+</div>
+</div>
+</section>
+
+<section id="incoming" class="page">
+<div class="pageHeadM"><h2>INCOMING MAIL REGISTER</h2></div>
+<div class="card"><label>SEARCH BY MAIL REFERENCE NUMBER</label><div class="searchBox"><input id="mailSearch" placeholder="Enter MAIL REFERENCE NUMBER"><button class="btnDark" onclick="loadMails()">SEARCH</button></div></div>
+<div class="card"><h3 class="formTitle">REGISTER NEW MAIL</h3><div class="grid2"><div><label>MAIL REFERENCE NUMBER *</label><input id="mRef"></div><div><label>MAIL NAME *</label><input id="mName"></div><div><label>ORIGINATING AGENCY *</label><input id="mAgency"></div><div><label>DATE</label><input id="mDate" type="date"></div><div><label>TIME</label><input id="mTime" type="time"></div></div><button class="btnGold full" onclick="saveMail()">SAVE MAIL →</button></div>
+<div class="card"><h3>MAIL REGISTER</h3><div id="mailList"></div></div>
+</section>
+
+<section id="createFile" class="page">
+<div class="pageHeadM"><h2>CREAT FILE <span class="welcome" id="welcomeCreate"></span></h2><button class="btnLight" onclick="logoutField()">LOGOUT</button></div>
+<div class="twoCol"><div class="card"><h3 class="formTitle">OPEN NEW FILE</h3><label>FILE NUMBER *</label><input id="fNo" placeholder="NIS/.../001"><label>FILE NAME *</label><input id="fName"><label>MAIL REFERENCE NUMBER *</label><input id="fMailRef"><label>MAIL NAME *</label><input id="fMailName"><label>DATE CREATED</label><input id="fDate" type="date"><label>ASSIGNED OFFICER *</label><input id="fOfficer"><button class="btnGold full" onclick="saveFile()">SAVE FILE</button></div><div class="card"><h3>FILE REGISTER - CLICK FILE TO VIEW MAILS</h3><div id="fileList"></div><div id="fileDetail"></div></div></div>
+</section>
+
+<section id="movement" class="page">
+<div class="pageHeadM"><h2>FILE MOVEMENT <span class="welcome" id="welcomeMove"></span></h2><button class="btnLight" onclick="logoutField()">LOGOUT</button></div>
+<div class="tabs"><button onclick="showMoveTab('INCOMING')">INCOMING FILE</button><button onclick="showMoveTab('OUTGOING')">OUTGOING FILE</button><button onclick="showMoveTab('DEEP')">DEEP FILES</button></div>
+<div id="moveBox"></div><div class="card"><h3>MOVEMENT HISTORY</h3><div id="moveList"></div></div>
+</section>
+
+<section id="searchPage" class="page">
+<div class="pageHeadM"><h2>SEARCH FILE LOCATION</h2><p>Read Only - Cannot Be Edited</p></div>
+<div class="card"><label>FILE NUMBER</label><input id="sFileNo" placeholder="NIS/.../001"><label>FILTER TYPE</label><select id="sFilter"><option>Incoming File</option><option>Outgoing File</option><option>Deep Files</option></select><button class="btnGold full" onclick="doSearch()">SEARCH</button><div id="searchResult"></div></div>
+</section>
+
+<section id="dailyPage" class="page">
+<div class="pageHeadM"><h2>DAILY REPORT</h2><p>Enter daily flight / pax / hit figures</p></div>
+<div class="card"><h3 class="formTitle">DAILY REPORT FORM</h3><label>DATE</label><input id="dDate" type="date"><div class="grid2">
+<div><label>NO OF FLIGHT CLEARED *</label><input id="d1" type="number" value="0"></div><div><label>NO OF INBOUND FLIGHT</label><input id="d2" type="number" value="0"></div><div><label>NO OF OUTBOUND FLIGHT</label><input id="d3" type="number" value="0"></div><div><label>TOTAL NO OF PAX CLEARED</label><input id="d4" type="number" value="0"></div><div><label>NO OF PAX ARRIVAL</label><input id="d5" type="number" value="0"></div><div><label>NO OF PAX DEPARTURE</label><input id="d6" type="number" value="0"></div><div><label>CONFIRMED HITS - SLTD</label><input id="d7" type="number" value="0"></div><div><label>FALSE HITS - SLTD</label><input id="d8" type="number" value="0"></div><div><label>CONFIRMED HITS - NOMINAL</label><input id="d9" type="number" value="0"></div><div><label>FALSE HITS - NOMINAL</label><input id="d10" type="number" value="0"></div><div><label>SHIFT</label><select id="dShift"><option>Morning</option><option>Afternoon</option><option>Night</option></select></div><div><label>OFFICER NAME</label><input id="dOfficer"></div></div>
+<button class="btnGold full" onclick="saveDaily()">SAVE DAILY REPORT</button></div>
+<div class="card"><h3>RECENT DAILY REPORTS</h3><div id="dailyList"></div></div>
+</section>
+
+<section id="adminPage" class="page">
+<div class="pageHeadM"><h2>ADMINISTRATION <span class="welcome" id="welcomeAdmin"></span></h2><button class="btnLight" onclick="go('home',document.querySelectorAll('nav button')[0])">LOGOUT</button></div>
+<div class="tabs6"><button onclick="showAdminTab('ISSUE')">ISSUE ACCESS</button><button onclick="showAdminTab('SHOW')">SHOW LOGINS</button><button onclick="showAdminTab('RESET')">RESET PASSWORD</button><button onclick="showAdminTab('DAILY')">DAILY REPORT</button><button onclick="showAdminTab('HIT')">HIT REPORT</button><button onclick="showAdminTab('SEARCHHIT')">SEARCH HIT</button></div>
+<div id="adminBox"></div>
+</section>
+
+<div id="loginModal" class="modal"><div class="mBox"><div class="mHead">SECURE LOGIN</div><h3 id="loginTitle">Login</h3><p class="mSub" id="loginSub">Default Password: admin123</p><label>LOGIN NAME</label><input id="loginName"><label>PASSWORD</label><input id="loginPass" type="password"><button class="btnDark full" onclick="doFieldLogin()">ENTER →</button><button class="btnLight full" onclick="hideModals()">CANCEL</button></div></div>
+<div id="adminModal" class="modal"><div class="mBox"><div class="mHead">ADMINISTRATION - RESTRICTED</div><h3>Administrator Login</h3><label>ADMIN NAME</label><input id="adminName"><label>PASSWORD</label><input id="adminPass" type="password"><button class="btnDark full" onclick="doAdminLogin()">ENTER →</button><button class="btnLight full" onclick="hideModals()">CANCEL</button></div></div>
+<footer>ADMINISTRATIVE PORTAL | CONFIDENTIAL - FOR OFFICIAL USE ONLY | Version 2026</footer>
+<script src="script.js"></script></body></html>
